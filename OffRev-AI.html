@@ -1,48 +1,310 @@
-<!-- Flashcard Display Section -->
-<div id="flashcardsContainer" style="display:none; margin-top:30px;">
-  <h3>📚 Your Flashcards</h3>
-  <div id="cardsList"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OffRev-AI — Smart Flashcard Generator</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; color: #fff; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 30px; font-size: 2.2rem; }
+        .box { background: rgba(255,255,255,0.95); border-radius: 16px; padding: 25px; margin-bottom: 20px; color: #333; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+        label { font-weight: 600; display: block; margin-bottom: 8px; color: #555; }
+        input, textarea { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; margin-bottom: 0; }
+        textarea { min-height: 200px; resize: vertical; }
+        button { padding: 14px 28px; font-size: 1.1rem; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; width: 100%; margin-top: 15px; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102,126,234,0.4); }
+        .flashcard { border: 2px solid #e0e0e0; border-radius: 12px; padding: 20px; margin: 15px 0; background: #fdfdfd; }
+        .flashcard-q { font-weight: bold; font-size: 1.05rem; margin-bottom: 10px; color: #4a3f8c; }
+        .flashcard-a { color: #2d2d2d; line-height: 1.6; padding-left: 10px; border-left: 3px solid #667eea; }
+        .delete-btn { background: #ff4757; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; float: right; }
+        .delete-btn:hover { background: #ff3838; }
+        .status { text-align: center; padding: 15px; font-style: italic; color: #333; margin-top: 10px; }
+        .hidden { display: none !important; }
+        .combined-area { border: 3px dashed #667eea; border-radius: 12px; padding: 0; background: #f8f9ff; position: relative; overflow: hidden; transition: all 0.2s; }
+        .combined-area.active { border-color: #764ba2; background: #e6e9ff; }
+        .drop-hint { position: absolute; top: 10px; left: 0; right: 0; text-align: center; color: #667eea; font-weight: 600; pointer-events: none; z-index: 1; padding: 5px; }
+        .combined-area textarea { border: none; background: transparent; margin: 0; min-height: 200px; padding: 45px 15px 15px 15px; resize: vertical; }
+        .file-badge { background: #e8f5e9; color: #2e7d32; padding: 8px 12px; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .clear-file { background: #ff4757; color: white; border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
+        .progress-bar { width: 100%; height: 8px; background: #e0e0e0; border-radius: 4px; margin-top: 10px; display: none; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 4px; width: 0%; transition: width 0.3s; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>✨ OffRev-AI Flashcard Generator</h1>
+
+    <div class="box">
+        <label for="reviewerName">📝 Name this Reviewer / Topic:</label>
+        <input type="text" id="reviewerName" placeholder="e.g. CC104 — Data Structures">
+
+        <label>📁 Upload File OR Paste Text Below:</label>
+        <div class="combined-area" id="combinedArea">
+            <div class="drop-hint" id="dropHint">📄 Drag & Drop File Here — OR — Paste Text Below</div>
+            <textarea id="notesInput" placeholder="Your text will appear here OR just paste your notes directly..."></textarea>
+            <input type="file" id="fileInput" accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg,.gif,.bmp" style="display:none;">
+        </div>
+        <div class="file-badge hidden" id="fileBadge">
+            <span>✅ Loaded: <strong id="fileName"></strong></span>
+            <button class="clear-file" onclick="clearFile()">Clear</button>
+        </div>
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <button class="btn-primary" id="generateBtn">✨ GENERATE FLASHCARDS</button>
+        <div class="status" id="status"></div>
+    </div>
+
+    <div class="box hidden" id="flashcardsContainer">
+        <h3>📚 Your Flashcards</h3>
+        <div id="cardsList"></div>
+    </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.min.js"></script>
 <script>
-// When flashcards are generated, display them with DELETE buttons
-function displayFlashcards(cards) {
-  const container = document.getElementById('cardsList');
-  container.innerHTML = ''; // Clear old cards
+// ⚠️ YOUR PROXY URL — ALREADY SET! DO NOT CHANGE!
+const PROXY_URL = "https://offrev-proxy.philoloveme1.workers.dev/";
 
-  cards.forEach((card, index) => {
-    const cardElement = document.createElement('div');
-    cardElement.className = 'flashcard';
-    cardElement.id = `card-${index}`;
-    cardElement.style.cssText = 'border:1px solid #ccc; padding:15px; margin:10px 0; border-radius:8px; background:#f9f9f9;';
+// GLOBAL VARIABLES
+let extractedText = "";
+let fileLoaded = false;
 
-    cardElement.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-        <div style="flex:1;">
-          <p><strong>Q${index + 1}:</strong> ${card.question}</p>
-          <p><strong>A:</strong> ${card.answer}</p>
-        </div>
-        <button 
-          onclick="deleteCard(${index})" 
-          style="background:#ff4444; color:white; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; margin-left:10px;">
-          🗑️ Delete
-        </button>
-      </div>
-    `;
-    container.appendChild(cardElement);
-  });
+// === COMBINED UPLOAD & PASTE AREA ===
+const combinedArea = document.getElementById('combinedArea');
+const fileInput = document.getElementById('fileInput');
+const notesInput = document.getElementById('notesInput');
+const fileBadge = document.getElementById('fileBadge');
+const fileName = document.getElementById('fileName');
+const status = document.getElementById('status');
+const progressBar = document.getElementById('progressBar');
+const progressFill = document.getElementById('progressFill');
 
-  document.getElementById('flashcardsContainer').style.display = 'block';
+// Click anywhere to select file
+combinedArea.addEventListener('click', (e) => {
+    if (e.target === combinedArea || e.target.id === 'dropHint') {
+        fileInput.click();
+    }
+});
+
+// Drag & drop
+combinedArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    combinedArea.classList.add('active');
+});
+combinedArea.addEventListener('dragleave', () => {
+    combinedArea.classList.remove('active');
+});
+combinedArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    combinedArea.classList.remove('active');
+    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+});
+
+// File selected
+fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length) handleFile(e.target.files[0]);
+});
+
+// === MAIN FILE HANDLER ===
+async function handleFile(file) {
+    fileName.textContent = file.name;
+    fileBadge.classList.remove('hidden');
+    progressBar.style.display = "block";
+    progressFill.style.width = "0%";
+    status.textContent = "📖 Reading file... Please wait...";
+
+    extractedText = "";
+    fileLoaded = false;
+
+    try {
+        if (file.type === "application/pdf") {
+            extractedText = await extractPDFText(file);
+        } else if (file.type.startsWith("image/")) {
+            extractedText = await extractImageText(file);
+        } else if (file.name.match(/\.(ppt|pptx|doc|docx|txt)$/i)) {
+            extractedText = await readTextFile(file);
+        } else {
+            throw new Error("File type not supported — copy-paste text instead");
+        }
+
+        if (!extractedText || extractedText.length < 20) {
+            status.textContent = "⚠️ Could not read enough text. Try copy-pasting.";
+            return;
+        }
+
+        notesInput.value = extractedText;
+        fileLoaded = true;
+        status.textContent = `✅ Ready! ${extractedText.length} characters extracted!`;
+        progressFill.style.width = "100%";
+
+    } catch (err) {
+        status.textContent = "⚠️ " + err.message + " — Please copy-paste your text.";
+        console.error(err);
+    }
 }
 
-// DELETE CARD FUNCTION
+// OCR FOR IMAGES
+async function extractImageText(file) {
+    progressFill.style.width = "20%";
+    const result = await Tesseract.recognize(file, 'eng', {
+        logger: m => {
+            if (m.status === 'recognizing text') {
+                progressFill.style.width = (20 + m.progress * 80) + '%';
+            }
+        }
+    });
+    return result.data.text;
+}
+
+// EXTRACT PDF TEXT
+async function extractPDFText(file) {
+    progressFill.style.width = "20%";
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let fullText = "";
+    const total = pdf.numPages;
+    for (let i = 1; i <= total; i++) {
+        const page = await pdf.getPage(i);
+        const txt = await page.getTextContent();
+        fullText += txt.items.map(item => item.str).join(" ") + "\n\n";
+        progressFill.style.width = (20 + ((i / total) * 70)) + '%';
+    }
+    return fullText;
+}
+
+// READ TEXT FILES
+async function readTextFile(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => resolve(e.target.result);
+        reader.onerror = reject;
+        reader.readAsText(file);
+    });
+}
+
+// CLEAR FILE
+function clearFile() {
+    fileInput.value = "";
+    notesInput.value = "";
+    extractedText = "";
+    fileLoaded = false;
+    fileBadge.classList.add('hidden');
+    progressBar.style.display = "none";
+    status.textContent = "";
+}
+
+// === GENERATE FLASHCARDS ===
+document.getElementById('generateBtn').addEventListener('click', async () => {
+    const name = document.getElementById('reviewerName').value.trim() || "My Reviewer";
+    const notes = notesInput.value.trim();
+
+    if (!notes) { alert('⚠️ Please upload a file OR paste your notes first!'); return; }
+
+    status.textContent = "🤖 AI is reading your notes & making flashcards... Please wait 15–30 seconds...";
+    document.getElementById('flashcardsContainer').classList.add('hidden');
+    document.getElementById('cardsList').innerHTML = "";
+
+    const prompt = `
+Create high-quality study flashcards from the text provided below.
+
+📌 RULES YOU MUST FOLLOW:
+- Make a MINIMUM of 20 flashcards and a MAXIMUM of 65 flashcards.
+- Ask the SAME concept in DIFFERENT WORDS so you learn it better.
+- Example: "What is X?" → "How would you define X?" → "What does X mean?"
+- EVERY answer MUST come ONLY from the provided text — NO outside information!
+- Format each flashcard as: Q: [clear question] ||| A: [clear answer]
+- Separate each flashcard onto its own line.
+
+Text to use:
+${notes}
+`;
+
+    try {
+        const res = await fetch(PROXY_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt })
+        });
+
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || "Unknown error");
+
+        // Parse flashcards
+        const lines = data.text.split('\n').filter(line => line.trim().length > 5);
+        const cards = [];
+        for (const line of lines) {
+            if (line.includes('|||')) {
+                const [q, a] = line.split('|||');
+                if (q && a) cards.push({
+                    question: q.replace(/^Q:\s*/i, '').trim(),
+                    answer: a.replace(/^A:\s*/i, '').trim()
+                });
+            }
+        }
+
+        if (cards.length === 0) {
+            alert("⚠️ Could not parse flashcards. Try again.");
+            status.textContent = "";
+            return;
+        }
+
+        displayFlashcards(cards, name);
+        status.textContent = `✅ Generated ${cards.length} flashcards!`;
+
+    } catch (err) {
+        alert("❌ Error: " + err.message + "\n\nMake sure your proxy server is running!");
+        status.textContent = "";
+    }
+});
+
+// === DISPLAY FLASHCARDS WITH DELETE BUTTONS ===
+function displayFlashcards(cards, topicName) {
+    const container = document.getElementById('flashcardsContainer');
+    const cardsList = document.getElementById('cardsList');
+    cardsList.innerHTML = "";
+    container.classList.remove('hidden');
+
+    // Add topic title
+    const title = document.createElement('h4');
+    title.textContent = `📖 Topic: ${topicName}`;
+    title.style.marginBottom = "20px";
+    title.style.color = "#4a3f8c";
+    cardsList.appendChild(title);
+
+    cards.forEach((card, index) => {
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'flashcard';
+        cardDiv.id = `card-${index}`;
+
+        cardDiv.innerHTML = `
+            <button class="delete-btn" onclick="deleteCard(${index})">🗑️ Delete</button>
+            <div class="flashcard-q">Q${index + 1}: ${card.question}</div>
+            <div class="flashcard-a">${card.answer}</div>
+            <div style="clear:both;"></div>
+        `;
+        cardsList.appendChild(cardDiv);
+    });
+}
+
+// === DELETE CARD FUNCTION ===
 function deleteCard(cardIndex) {
-  const card = document.getElementById(`card-${cardIndex}`);
-  if (card) {
-    card.style.transition = 'opacity 0.3s';
-    card.style.opacity = '0';
-    setTimeout(() => card.remove(), 300);
-    alert('✅ Card deleted!');
-  }
+    const card = document.getElementById(`card-${cardIndex}`);
+    if (card) {
+        card.style.transition = 'opacity 0.3s ease';
+        card.style.opacity = '0';
+        setTimeout(() => {
+            card.remove();
+            alert('✅ Card deleted!');
+        }, 300);
+    }
 }
 </script>
+</body>
+</html>
