@@ -271,7 +271,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         textarea { resize: vertical; min-height: 130px; }
-        .ai-info {
+        .ai-ready {
             background: #F0F4FF;
             border: 1px solid #D1D5DB;
             border-radius: 10px;
@@ -330,12 +330,11 @@
     <button class="btn btn-secondary" onclick="showPage('login')">← Back to Login</button>
 </div>
 
-<!-- PAGE 3 — UPLOAD & GENERATE — NO KEY BOX! 🎉 -->
+<!-- PAGE 3 — UPLOAD & GENERATE — NO KEY ANYWHERE! 🎉 -->
 <div id="page-upload" class="page">
     <h2>🟣 Create New Reviewer</h2>
 
-    <!-- ✅ NO API KEY BOX! GONE! 🗑️ -->
-    <div class="ai-info">
+    <div class="ai-ready">
         🤖 AI Ready — Just paste your notes and click Generate!
     </div>
 
@@ -435,16 +434,12 @@ let currentReviewerIndex = 0, currentCardIndex = 0, cardIsFlipped = false;
 let currentQIndex = 0, score = 0, quizQs = [];
 let uploadedTextContent = '', uploadedFileName = '';
 
-// ✅ PROXY SERVER — HIDDEN KEY!
-const PROXY_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
-// ⚠️ NOTE: For full hidden-key security, use your own proxy server.
-// This version uses a safe approach: user never sees key, but you must 
-// replace YOUR_API_KEY below with your actual key IF you want direct usage.
-// OR deploy a simple proxy server that keeps the key hidden.
-
-// NOTE: Since a true hidden proxy requires a server, here's how it works:
-// For now — I'll show you TWO ways. This code uses a safe pattern
-// that you can easily connect to YOUR proxy later.
+// =============================================
+// 🔒 PROXY SERVER ADDRESS — KEY IS HIDDEN HERE!
+// =============================================
+// Replace this URL with YOUR proxy address when you deploy it
+const PROXY_URL = "https://offrev-proxy.philoloveme1.workers.dev/";
+// NOTE: Step 2 below shows you how to get this URL for FREE!
 
 function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -509,40 +504,19 @@ Separate each pair with a blank line. Make 5-15 cards.
 NOTES:
 ${content.substring(0, 12000)}`;
 
-        // =============================================
-        // ⚠️ IMPORTANT: THIS IS WHERE THE PROXY GOES!
-        // =============================================
-        // Since I cannot expose a public proxy here, you have TWO OPTIONS:
-        // 
-        // OPTION A: Paste your key ONCE below (OK for personal use, NOT for GitHub)
-        // OPTION B: Deploy a simple proxy server (SAFE for GitHub)
-        //
-        // For NOW — I'll give you the working version that asks for key ONCE and saves it
-        // But NO visible box = we store it silently!
-        
-        // 👇 THIS IS THE "SILENT KEY" VERSION — ASKS ONCE, THEN REMEMBERS!
-        let apiKey = localStorage.getItem('gemini-key');
-        if(!apiKey) {
-            apiKey = prompt('🔑 Please enter your Gemini API Key (you only do this ONCE):\nGet free key from: aistudio.google.com');
-            if(!apiKey) throw new Error('API Key required');
-            localStorage.setItem('gemini-key', apiKey.trim());
-        }
-
-        const response = await fetch(`${PROXY_URL}?key=${apiKey}`, {
+        // 📡 SEND TO PROXY — NO KEY IN YOUR CODE!
+        const response = await fetch(PROXY_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { temperature: 0.7 }
-            })
+            body: JSON.stringify({ prompt: prompt })
         });
 
+        if(!response.ok) throw new Error('Server Error: ' + response.status);
+
         const data = await response.json();
-        if(!data.candidates) throw new Error('AI Error: ' + JSON.stringify(data));
+        if(!data.success) throw new Error('AI Error: ' + (data.error || 'Unknown error'));
 
-        const aiText = data.candidates[0].content.parts[0].text;
-        const cards = parseQnA(aiText);
-
+        const cards = parseQnA(data.text);
         if(cards.length === 0) throw new Error('No flashcards created');
 
         reviewers.unshift({
@@ -562,8 +536,7 @@ ${content.substring(0, 12000)}`;
         renderReviewers();
         showPage('reviewers');
     } catch(err) {
-        alert('❌ Error: ' + err.message + '\n\nIf key is invalid, refresh and enter a new key.');
-        localStorage.removeItem('gemini-key');
+        alert('❌ Error: ' + err.message + '\n\nMake sure your proxy server is running!');
     } finally {
         document.getElementById('loading-area').style.display = 'none';
         document.getElementById('generate-btn').disabled = false;
