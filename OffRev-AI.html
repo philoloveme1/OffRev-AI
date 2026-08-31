@@ -12,483 +12,623 @@
             --purple-light: #9b7ff0;
             --purple-bg: #f3efff;
             --purple-border: #c4b5f0;
-            --white: #ffffff;
-            --gray-text: #444444;
-            --light-gray: #f8f8fa;
-            --correct: #28a745;
-            --wrong: #dc3545;
+            --gold: #ffd700;
+            --text-dark: #2d2d2d;
+            --text-light: #666;
+            --shadow: 0 4px 16px rgba(90, 61, 145, 0.15);
         }
-        body { background: linear-gradient(135deg, #7b52d9 0%, #9b7ff0 100%); min-height: 100vh; color: var(--gray-text); }
-        .sidebar { position: fixed; left: 0; top: 0; width: 220px; height: 100vh; background: var(--white); padding: 20px 0; box-shadow: 2px 0 10px rgba(0,0,0,0.1); z-index: 10; }
-        .sidebar-logo { font-size: 28px; font-weight: bold; color: var(--purple-main); text-align: center; margin-bottom: 40px; }
-        .sidebar-btn { display: block; width: 100%; padding: 14px 20px; margin: 5px 0; background: transparent; border: none; text-align: left; font-size: 16px; color: var(--gray-text); cursor: pointer; border-left: 4px solid transparent; transition: all 0.2s; }
-        .sidebar-btn:hover, .sidebar-btn.active { background: var(--purple-bg); border-left-color: var(--purple-main); color: var(--purple-dark); font-weight: 600; }
-        .main-content { margin-left: 240px; padding: 30px; }
-        .card { background: var(--white); border-radius: 16px; padding: 30px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); max-width: 700px; margin: 0 auto; }
-        h1, h2, h3 { color: var(--purple-dark); margin-bottom: 20px; }
-        .subtitle { color: #666; margin-bottom: 25px; }
-        .input-area { width: 100%; min-height: 120px; padding: 14px; border: 2px solid var(--purple-border); border-radius: 10px; font-size: 15px; margin-bottom: 15px; resize: vertical; background: var(--light-gray); }
-        .file-area { width: 100%; padding: 20px; border: 2px dashed var(--purple-main); border-radius: 10px; text-align: center; margin-bottom: 15px; background: var(--purple-bg); cursor: pointer; }
-        .file-area:hover { background: #e9dfff; }
-        .input-field { width: 100%; padding: 14px; border: 2px solid var(--purple-border); border-radius: 10px; font-size: 15px; margin-bottom: 15px; background: var(--white); }
-        .btn { padding: 12px 28px; border: none; border-radius: 25px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .btn-primary { background: linear-gradient(135deg, var(--purple-dark), var(--purple-main)); color: var(--white); width: auto; display: inline-block; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(90, 61, 145, 0.3); }
-        .btn-small { padding: 8px 16px; font-size: 14px; border-radius: 20px; }
-        .flashcard { border: 1px solid var(--purple-border); border-radius: 12px; padding: 20px; margin: 12px 0; background: var(--purple-bg); position: relative; }
-        .card-q { font-weight: 600; color: var(--purple-dark); margin-bottom: 10px; font-size: 15px; }
-        .card-a { color: #333; padding-left: 10px; border-left: 3px solid var(--purple-main); }
-        .delete-btn { position: absolute; top: 10px; right: 10px; background: #ff4d6d; color: white; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-weight: bold; font-size: 16px; line-height: 1; display: flex; align-items: center; justify-content: center; }
-        .quiz-option { padding: 14px 18px; border: 2px solid var(--purple-border); border-radius: 10px; margin: 10px 0; cursor: pointer; transition: all 0.2s; background: white; }
-        .quiz-option:hover { border-color: var(--purple-main); background: var(--purple-bg); }
-        .quiz-option.selected { border-color: var(--purple-main); background: var(--purple-bg); font-weight: 600; }
-        .quiz-option.correct { border-color: var(--correct); background: #e8f5e9; color: #155724; }
-        .quiz-option.wrong { border-color: var(--wrong); background: #ffebee; color: #721c24; }
-        .status-msg { padding: 12px; border-radius: 8px; margin: 15px 0; display: none; }
-        .status-error { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
-        .status-success { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
-        .hidden { display: none !important; }
-        .deck-item { padding: 15px; background: var(--purple-bg); border-radius: 10px; margin: 10px 0; cursor: pointer; border-left: 4px solid var(--purple-main); }
-        .deck-item:hover { background: #e9dfff; }
-        .progress { text-align: center; margin-top: 15px; color: #666; font-size: 15px; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        /* === SIDEBAR === */
+        .sidebar {
+            position: fixed; left: 0; top: 0; bottom: 0; width: 220px;
+            background: white; box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px 0; z-index: 100; display: none;
+        }
+        .sidebar.show { display: block; }
+        .sidebar-logo { text-align: center; font-size: 1.8rem; font-weight: bold; color: var(--purple-main); margin-bottom: 30px; padding-top:10px; }
+        .sidebar-logo span { color: var(--gold); }
+        .sidebar-nav { list-style: none; }
+        .sidebar-nav li { padding: 14px 25px; cursor: pointer; color: var(--text-dark); font-weight: 500; transition: all 0.2s; }
+        .sidebar-nav li:hover, .sidebar-nav li.active { background: var(--purple-bg); color: var(--purple-main); border-left: 4px solid var(--purple-main); }
+        .sidebar-bottom { position: absolute; bottom: 20px; width: 100%; }
+        /* === MAIN CONTENT === */
+        .main-content { margin-left: 0; padding: 20px; transition: margin-left 0.3s; }
+        .main-content.shifted { margin-left: 220px; }
         .page { display: none; }
         .page.active { display: block; }
-        .auth-box { max-width: 420px; margin: 80px auto; }
-        .auth-box h2 { text-align: center; margin-bottom: 25px; }
-        .auth-box .btn { width: 100%; margin-top: 10px; }
-        .tab-bar { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab { padding: 10px 20px; background: #eee; border-radius: 8px; cursor: pointer; font-weight: 500; }
-        .tab.active { background: var(--purple-main); color: white; }
+        /* === WELCOME PAGE === */
+        .welcome-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; text-align: center; }
+        .welcome-logo { font-size: 4.5rem; font-weight: bold; color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.2); margin-bottom: 10px; }
+        .welcome-logo span { color: var(--gold); }
+        .welcome-sub { color: rgba(255,255,255,0.9); font-size: 1.2rem; margin-bottom: 50px; }
+        .btn-lg { padding: 16px 45px; font-size: 1.2rem; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; transition: all 0.3s; margin: 8px; }
+        .btn-purple { background: white; color: var(--purple-main); }
+        .btn-purple:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .btn-transparent { background: transparent; color: white; border: 2px solid white; }
+        .btn-transparent:hover { background: rgba(255,255,255,0.15); }
+        /* === BOXES & FORMS === */
+        .card-box { background: white; border-radius: 16px; padding: 30px; box-shadow: var(--shadow); max-width: 540px; margin: 30px auto; }
+        .card-box h2 { text-align: center; color: var(--purple-dark); margin-bottom: 25px; }
+        label { font-weight: 600; color: #5a3d91; display: block; margin-bottom: 8px; margin-top: 15px; }
+        input {
+            width: 100%; padding: 14px 16px; margin-bottom: 16px;
+            border: 2px solid var(--purple-border); border-radius: 10px;
+            font-size: 1rem; background: white;
+        }
+        /* === ONE COMBINED UPLOAD AREA — FILE INFO INSIDE === */
+        .upload-combined {
+            border: 2px dashed var(--purple-main); border-radius: 12px;
+            padding: 15px; background: var(--purple-bg); margin-bottom: 16px;
+            position: relative; min-height: 180px; cursor: text;
+        }
+        .upload-hint {
+            text-align: center; color: var(--purple-main); font-weight: 600;
+            font-size: 0.95rem; padding: 10px 0;
+        }
+        .upload-combined-textarea {
+            width: 100%; min-height: 100px; padding: 10px;
+            border: none; background: transparent; font-size: 1rem;
+            resize: vertical; outline: none;
+            text-align: left;
+            direction: ltr;
+        }
+        .file-info {
+            background: white; border: 1px solid var(--purple-border);
+            padding: 10px 14px; border-radius: 8px; margin: 10px 0;
+            display: none; justify-content: space-between; align-items: center;
+        }
+        .file-info.show { display: flex; }
+        .clear-btn {
+            background: #ff4757; color: white; border: none; padding: 5px 12px;
+            border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 500;
+        }
+        .btn-oval {
+            display: block; width: 220px; padding: 14px; margin: 20px auto;
+            background: linear-gradient(135deg, var(--purple-main), var(--purple-dark));
+            color: white; border: none; border-radius: 30px;
+            font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-oval:hover { transform: scale(1.03); box-shadow: 0 4px 15px rgba(123, 82, 217, 0.4); }
+        .link-text { text-align: center; margin-top: 15px; color: var(--purple-main); cursor: pointer; text-decoration: underline; }
+        .status { text-align: center; margin: 15px 0; color: var(--purple-dark); font-style: italic; }
+        .warning-box { background: #fff3cd; color: #856404; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 0.95rem; line-height: 1.5; }
+        /* === REVIEWER LIST === */
+        .reviewer-item {
+            padding: 16px; background: var(--purple-bg); border-radius: 10px; margin: 10px 0;
+            display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+        }
+        .reviewer-item:hover { background: #e9e2fb; }
+        .dots-btn { border: none; background: none; font-size: 1.3rem; cursor: pointer; color: var(--text-light); padding: 0 10px; }
+        .dropdown-menu { position: relative; }
+        .dropdown-content {
+            display: none; position: absolute; right: 0; top: 30px;
+            background: white; min-width: 140px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 8px; z-index: 10;
+        }
+        .dropdown-content.show { display: block; }
+        .dropdown-content div { padding: 10px 14px; cursor: pointer; font-size: 0.95rem; }
+        .dropdown-content div:hover { background: var(--purple-bg); }
+        /* === FLASHCARD DISPLAY === */
+        .flashcard {
+            width: 100%; min-height: 180px; perspective: 1000px; cursor: pointer; margin: 15px 0;
+        }
+        .card-inner {
+            position: relative; width: 100%; min-height: 180px; text-align: center;
+            transition: transform 0.5s; transform-style: preserve-3d;
+        }
+        .flashcard.flipped .card-inner { transform: rotateY(180deg); }
+        .card-front, .card-back {
+            position: absolute; width: 100%; padding: 25px;
+            backface-visibility: hidden; border-radius: 14px;
+            box-shadow: var(--shadow); display: flex; align-items: center; justify-content: center;
+        }
+        .card-front { background: white; color: var(--purple-dark); border: 2px solid var(--purple-border); }
+        .card-back { background: linear-gradient(135deg, #f3efff, #e2d5fb); color: var(--text-dark); transform: rotateY(180deg); border: 2px solid var(--purple-main); }
+        .card-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .card-nav button { padding: 8px 16px; background: var(--purple-main); color: white; border: none; border-radius: 8px; cursor: pointer; }
+        .card-index { color: var(--text-light); font-size: 0.95rem; }
+        .top-actions { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .top-actions button { padding: 8px 14px; background: var(--purple-main); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; margin-left: 5px; }
+        .back-btn { background: white; color: var(--purple-main); border: 2px solid var(--purple-main) !important; }
+        .quiz-option {
+            padding: 14px 18px; border: 2px solid var(--purple-border); border-radius: 10px;
+            margin: 10px 0; cursor: pointer; transition: all 0.2s;
+            font-size: 1rem; text-align: left;
+        }
+        .quiz-option:hover, .quiz-option.selected { border-color: var(--purple-main); background: var(--purple-bg); }
+        .quiz-question { font-size: 1.1rem; font-weight: 600; color: var(--purple-dark); margin-bottom: 20px; line-height: 1.5; text-align: left; }
+        .quiz-input { width: 100%; padding: 14px; border: 2px solid var(--purple-border); border-radius: 8px; font-size: 1rem; margin-bottom: 15px; text-align: left; }
+        .quiz-result { margin-top: 15px; padding: 12px; border-radius: 8px; font-weight: 500; text-align: left; }
+        .correct { background: #e8f5e9; color: #2e7d32; }
+        .wrong { background: #ffebee; color: #c62828; }
+      
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
-
-    <!-- Login / Signup Page -->
-    <div id="authPage" class="page active">
-        <div class="card auth-box">
-            <h1 style="text-align:center;">📚 OffRev</h1>
-            <p class="subtitle" style="text-align:center;">Smart Flashcard & Quiz Generator</p>
-            <div class="tab-bar">
-                <div class="tab active" onclick="switchAuthTab('login')">Log In</div>
-                <div class="tab" onclick="switchAuthTab('signup')">Sign Up</div>
-            </div>
-            <div id="loginForm">
-                <input type="text" id="loginUser" class="input-field" placeholder="Username">
-                <input type="password" id="loginPass" class="input-field" placeholder="Password">
-                <button class="btn btn-primary" onclick="login()">Log In</button>
-            </div>
-            <div id="signupForm" class="hidden">
-                <input type="text" id="newUser" class="input-field" placeholder="Choose Username">
-                <input type="password" id="newPass" class="input-field" placeholder="Choose Password">
-                <button class="btn btn-primary" onclick="signup()">Create Account</button>
-            </div>
-            <div id="authMsg" class="status-msg"></div>
+<!-- === SIDEBAR NAVIGATION === -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-logo">Off<span>Rev</span></div>
+    <ul class="sidebar-nav">
+        <li onclick="goToPage('uploadPage')" class="active">🏠 Home</li>
+        <li onclick="goToPage('uploadPage')">📁 Upload File</li>
+        <li onclick="goToPage('reviewersPage')">📚 My Reviewers</li>
+    </ul>
+    <ul class="sidebar-nav sidebar-bottom">
+        <li onclick="logout()">🚪 Logout</li>
+    </ul>
+</div>
+<!-- === MAIN CONTENT AREA === -->
+<div class="main-content" id="mainContent">
+    <!-- PAGE 1: WELCOME / LOGIN -->
+    <div class="page active" id="welcomePage">
+        <div class="welcome-wrap">
+            <div class="welcome-logo">Off<span>Rev</span></div>
+            <div class="welcome-sub">Smart Flashcard & Quiz Generator — Study Smarter ✨</div>
+            <button class="btn-lg btn-purple" onclick="showLogin()">🔐 Log In</button>
+            <button class="btn-lg btn-transparent" onclick="showCreateAccount()">📝 Create Account</button>
         </div>
     </div>
-
-    <!-- Main App -->
-    <div id="appPage" class="page">
-        <div class="sidebar">
-            <div class="sidebar-logo">OffRev</div>
-            <button class="sidebar-btn active" onclick="showPage('home')">🏠 Home</button>
-            <button class="sidebar-btn" onclick="showPage('upload')">📁 Upload File</button>
-            <button class="sidebar-btn" onclick="showPage('decks')">📚 My Reviewers</button>
-            <div style="margin-top: 60px;"></div>
-            <button class="sidebar-btn" style="color:#dc3545;" onclick="logout()">🚪 Logout</button>
+    <!-- PAGE 2: LOGIN FORM -->
+    <div class="page" id="loginPage">
+        <div class="card-box">
+            <h2>🔐 Log In to OffRev</h2>
+            <input type="text" id="loginUser" placeholder="Username">
+            <input type="email" id="loginEmail" placeholder="Email / Gmail">
+            <input type="password" id="loginPass" placeholder="Password">
+            <button class="btn-oval" onclick="doLogin()">Log In</button>
+            <div class="link-text" onclick="showCreateAccount()">Don't have an account? Create one here</div>
+            <div class="link-text" onclick="showWelcome()">← Back</div>
         </div>
-
-        <div class="main-content">
-            <!-- Home -->
-            <div id="homeSection" class="page active">
-                <div class="card">
-                    <h1>✨ Welcome to OffRev!</h1>
-                    <p class="subtitle">Your AI-powered study companion — turn notes into flashcards instantly!</p>
-                    <div style="background:var(--purple-bg); padding:20px; border-radius:10px; margin:20px 0;">
-                        <h3>📴 How it works:</h3>
-                        <ul style="margin-left:20px; line-height:1.8;">
-                            <li>🌐 <strong>Need Internet:</strong> Upload/Paste notes → Generate NEW flashcards (AI processing)</li>
-                            <li>📴 <strong>Works OFFLINE:</strong> Review saved flashcards & take quizzes anytime!</li>
-                            <li>⚠️ <strong>Free Limit:</strong> Max 20 generations per minute → Slow down if blocked!</li>
-                        </ul>
-                    </div>
-                    <button class="btn btn-primary" onclick="showPage('upload')">📁 Start Creating Now</button>
+    </div>
+    <!-- PAGE 3: CREATE ACCOUNT -->
+    <div class="page" id="createPage">
+        <div class="card-box">
+            <h2>📝 Create Account</h2>
+            <input type="text" id="newName" placeholder="Full Name">
+            <input type="text" id="newUser" placeholder="Username">
+            <input type="email" id="newEmail" placeholder="Email / Gmail">
+            <input type="password" id="newPass" placeholder="Password">
+            <button class="btn-oval" onclick="doCreateAccount()">Create Account</button>
+            <div class="link-text" onclick="showLogin()">Already have account? Log In here</div>
+            <div class="link-text" onclick="showWelcome()">← Back</div>
+        </div>
+    </div>
+    <!-- PAGE 4: UPLOAD & GENERATE — FILE INFO INSIDE BOX + TEXT LEFT ALIGNED -->
+    <div class="page" id="uploadPage">
+        <div class="card-box">
+            <h2>✨ Generate Reviewer</h2>
+            <div class="warning-box">
+                ⚠️ PPTX files: Open → Select All → Copy text → Paste below.<br>
+                ✅ PDF, Images, and plain text work perfectly!
+            </div>
+            <!-- === UPLOAD AREA — FILE INFO INSIDE THE BOX === -->
+            <label>📁 Upload File OR Paste Notes Below:</label>
+            <div class="upload-combined" id="uploadCombined">
+                <div class="upload-hint" onclick="document.getElementById('fileInput').click()">
+                    📄 Drag file here OR Click to Select
+                </div>
+                <div class="file-info" id="fileInfo">
+                    <span>✅ Selected: <span id="fName"></span></span>
+                    <button class="clear-btn" onclick="clearUpload()">Clear</button>
+                </div>
+                <textarea class="upload-combined-textarea" id="pastedText" placeholder="Or paste your notes here..."></textarea>
+            </div>
+            <input type="file" id="fileInput" accept=".pdf,.txt,.png,.jpg,.jpeg" style="display:none;">
+            <label>📝 Name this Reviewer / Topic / Subject</label>
+            <input type="text" id="topicName" placeholder="e.g. Technopreneurship — Chapter 1">
+            <button class="btn-oval" id="genBtn" onclick="generateReviewer()">✨ Click to Generate</button>
+            <div class="status" id="status"></div>
+        </div>
+    </div>
+    <!-- PAGE 5: LIST OF GENERATED REVIEWERS -->
+    <div class="page" id="reviewersPage">
+        <div class="card-box">
+            <h2>📚 Your Generated Reviewers</h2>
+            <div id="reviewersList"></div>
+            <div class="link-text" onclick="goToPage('uploadPage')">← Upload another file</div>
+        </div>
+    </div>
+    <!-- PAGE 6: FLASHCARD VIEWER -->
+    <div class="page" id="flashcardPage">
+        <div class="card-box">
+            <div class="top-actions">
+                <button class="back-btn" onclick="goToPage('reviewersPage')">← Back</button>
+                <div>
+                    <button onclick="downloadFlashcardsTXT()">📥 Download .TXT</button>
+                    <button onclick="showQuizOptions()">📝 Take Quiz</button>
                 </div>
             </div>
-
-            <!-- Upload / Generate -->
-            <div id="uploadSection" class="page">
-                <div class="card">
-                    <h2>✨ Generate Reviewer</h2>
-                    <p class="subtitle">Paste your notes OR upload a PDF/image file — AI will make flashcards for you!</p>
-                    
-                    <div class="file-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
-                        <p>📄 Click to upload PDF, Image, or drag file here</p>
-                        <input type="file" id="fileInput" accept=".pdf,.png,.jpg,.jpeg,.txt" style="display:none;">
-                    </div>
-                    
-                    <textarea id="notesInput" class="input-area" placeholder="Or PASTE your notes here directly..."></textarea>
-                    
-                    <input type="text" id="deckName" class="input-field" placeholder="Name this Reviewer / Topic / Subject">
-                    
-                    <button class="btn btn-primary" id="genBtn" onclick="generateFlashcards()">✨ Click to Generate</button>
-                    
-                    <div id="statusMsg" class="status-msg"></div>
+            <h3 style="text-align:center; color:var(--purple-dark); margin-bottom:20px;" id="cardTopic"></h3>
+            <div class="flashcard" id="flashcard" onclick="flipCard()">
+                <div class="card-inner">
+                    <div class="card-front" id="cardFront">Click to load card...</div>
+                    <div class="card-back" id="cardBack"></div>
                 </div>
             </div>
-
-            <!-- Saved Reviewers -->
-            <div id="decksSection" class="page">
-                <div class="card">
-                    <h2>📚 Your Saved Reviewers</h2>
-                    <div id="decksList"></div>
-                </div>
-            </div>
-
-            <!-- Flashcard View -->
-            <div id="flashcardSection" class="page">
-                <div class="card">
-                    <h2 id="deckTitle"></h2>
-                    <div style="text-align:center; margin-bottom:15px;">
-                        <button class="btn btn-small" onclick="flipCard()">🔄 Flip Card</button>
-                        <button class="btn btn-small" onclick="prevCard()">⬅️ Previous</button>
-                        <button class="btn btn-small" onclick="nextCard()">Next ➡️</button>
-                        <button class="btn btn-small" onclick="startQuiz()">📝 Take Quiz</button>
-                        <button class="btn btn-small" onclick="downloadFlashcards()">📥 Download (.txt)</button>
-                        <button class="btn btn-small" style="background:#ff4d6d; color:white;" onclick="deleteDeck()">🗑️ Delete</button>
-                    </div>
-                    <div id="flashcardDisplay" style="min-height:150px; padding:25px; background:var(--purple-bg); border-radius:12px; text-align:center; font-size:18px; cursor:pointer;" onclick="flipCard()">
-                        Click to see Question
-                    </div>
-                    <div class="progress" id="cardProgress">Card 1 of 1</div>
-                    <button class="btn btn-small" onclick="showPage('decks')" style="margin-top:20px;">← Back to Reviewers</button>
-                </div>
-            </div>
-
-            <!-- Quiz View -->
-            <div id="quizSection" class="page">
-                <div class="card">
-                    <h2>📝 Quiz Mode</h2>
-                    <h3 id="quizQuestion"></h3>
-                    <div id="quizOptions"></div>
-                    <button class="btn btn-primary" id="checkBtn" onclick="checkAnswer()">✅ Check Answer</button>
-                    <div id="quizResult" style="margin-top:15px; padding:12px; border-radius:8px; display:none;"></div>
-                    <div class="progress" id="quizProgress">Question 1 of 1</div>
-                    <button class="btn btn-small" onclick="exitQuiz()" style="margin-top:20px;">← Back to Flashcards</button>
-                </div>
+            <div class="card-nav">
+                <button onclick="prevCard()">← Previous</button>
+                <span class="card-index" id="cardIndex">1 / 1</span>
+                <button onclick="nextCard()">Next →</button>
             </div>
         </div>
     </div>
-
+    <!-- PAGE 7: QUIZ OPTIONS -->
+    <div class="page" id="quizOptPage">
+        <div class="card-box">
+            <div class="top-actions">
+                <button class="back-btn" onclick="goToPage('flashcardPage')">← Back</button>
+            </div>
+            <h2 style="text-align:center; color:var(--purple-dark); margin-bottom:20px;">📝 Select Quiz Type</h2>
+            <div class="quiz-option" data-type="choice" onclick="pickQuiz(this)">Multiple Choice</div>
+            <div class="quiz-option" data-type="blank" onclick="pickQuiz(this)">Fill in the Blank</div>
+            <div class="quiz-option" data-type="numeric" onclick="pickQuiz(this)">Numeric</div>
+            <div class="quiz-option" data-type="all" onclick="pickQuiz(this)">All Types</div>
+            <button class="btn-oval" onclick="startQuiz()">Start Quiz</button>
+        </div>
+    </div>
+    <!-- PAGE 8: QUIZ RUNNER -->
+    <div class="page" id="quizPage">
+        <div class="card-box">
+            <div class="top-actions">
+                <button class="back-btn" onclick="goToPage('quizOptPage')">← Back</button>
+                <span id="quizScore" style="color:var(--purple-dark); font-weight:bold;">Score: 0/0</span>
+            </div>
+            <h3 class="quiz-question" id="qText"></h3>
+            <div id="qOptions"></div>
+            <input type="text" id="qAnswer" class="quiz-input" placeholder="Your answer here..." style="display:none;">
+            <button class="btn-oval" onclick="checkAnswer()">Check Answer</button>
+            <div id="qResult" class="quiz-result hidden"></div>
+            <div class="card-nav"><span id="qIndex">1 / 1</span></div>
+        </div>
+    </div>
+</div>
+<!-- === LIBRARIES === -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.min.js"></script>
 <script>
-// === CONFIG ===
+// ⚙️ CONFIG — USE YOUR PROXY SERVER
 const PROXY_URL = "https://offrev-proxy.philoloveme1.workers.dev/";
-const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
-
-// === STATE ===
+// 📦 DATA STORAGE
 let currentUser = null;
-let decks = JSON.parse(localStorage.getItem('offrev_decks') || '[]');
-let currentDeckIndex = -1;
-let currentCardIndex = 0;
-let cardFlipped = false;
-let quizMode = false;
-let quizIndex = 0;
-let quizScore = 0;
-
-// === AUTH ===
-function switchAuthTab(tab) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    event.target.classList.add('active');
-    document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
-    document.getElementById('signupForm').classList.toggle('hidden', tab !== 'signup');
-    document.getElementById('authMsg').style.display = 'none';
+let reviewers = JSON.parse(localStorage.getItem('offrev_reviewers') || '[]');
+let activeReviewer = null;
+let cards = [];
+let cardIdx = 0;
+let quizType = 'all';
+let quizQs = [];
+let quizIdx = 0;
+let quizCorrect = 0;
+// === CLEAN ANSWER TEXT — REMOVES "A: " FROM AI ANSWERS BUT KEEPS A/B/C/D IN QUIZ ===
+function cleanAnswerText(text) {
+    if (!text) return '';
+    return text
+        .replace(/^[A-Za-z]\.\s*/i, '')
+        .replace(/^[A-Za-z]:\s*/i, '')
+        .replace(/^Answer:\s*/i, '')
+        .replace(/^A:\s*/g, '')
+        .trim();
 }
-
-function signup() {
-    const u = document.getElementById('newUser').value.trim();
-    const p = document.getElementById('newPass').value;
-    if(!u || !p) return showAuthMsg('Fill all fields!', 'error');
-    const users = JSON.parse(localStorage.getItem('offrev_users') || '{}');
-    if(users[u]) return showAuthMsg('Username already exists!', 'error');
-    users[u] = { pass: p };
-    localStorage.setItem('offrev_users', JSON.stringify(users));
-    showAuthMsg('✅ Account created! Log in now!', 'success');
+// === LETTERS FOR QUIZ OPTIONS ===
+const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
+// === PAGE NAVIGATION ===
+function hideAllPages() { document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); }
+function showWelcome() { hideAllPages(); document.getElementById('welcomePage').classList.add('active'); closeSidebar(); }
+function showLogin() { hideAllPages(); document.getElementById('loginPage').classList.add('active'); }
+function showCreateAccount() { hideAllPages(); document.getElementById('createPage').classList.add('active'); }
+function goToPage(id) { hideAllPages(); document.getElementById(id).classList.add('active'); updateSidebar(id); }
+function updateSidebar(pageId) {
+    document.querySelectorAll('.sidebar-nav li').forEach(li=>li.classList.remove('active'));
+    if(pageId==='uploadPage') document.querySelectorAll('.sidebar-nav li')[0].classList.add('active');
+    if(pageId==='reviewersPage') document.querySelectorAll('.sidebar-nav li')[2].classList.add('active');
 }
-
-function login() {
-    const u = document.getElementById('loginUser').value.trim();
-    const p = document.getElementById('loginPass').value;
-    const users = JSON.parse(localStorage.getItem('offrev_users') || '{}');
-    if(!users[u] || users[u].pass !== p) return showAuthMsg('Wrong username or password!', 'error');
-    currentUser = u;
-    decks = JSON.parse(localStorage.getItem('offrev_decks_' + u) || '[]');
-    document.getElementById('authPage').classList.remove('active');
-    document.getElementById('appPage').classList.add('active');
-    showPage('home');
+function openSidebar() { document.getElementById('sidebar').classList.add('show'); document.getElementById('mainContent').classList.add('shifted'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('show'); document.getElementById('mainContent').classList.remove('shifted'); }
+// === ACCOUNT SYSTEM ===
+function doCreateAccount() {
+    const name = document.getElementById('newName').value.trim();
+    const user = document.getElementById('newUser').value.trim();
+    const email = document.getElementById('newEmail').value.trim();
+    const pass = document.getElementById('newPass').value.trim();
+    if(!name||!user||!email||!pass) return alert('⚠️ Fill all fields');
+    localStorage.setItem('offrev_user', JSON.stringify({name,user,email}));
+    alert('✅ Account created! Please Log In.');
+    showLogin();
 }
-
+function doLogin() {
+    const user = document.getElementById('loginUser').value.trim();
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass = document.getElementById('loginPass').value.trim();
+    if(!user||!email||!pass) return alert('⚠️ Fill all fields');
+    currentUser = {name:user,user,email};
+    localStorage.setItem('offrev_current', JSON.stringify(currentUser));
+    openSidebar();
+    goToPage('uploadPage');
+    loadReviewersList();
+}
 function logout() {
+    localStorage.removeItem('offrev_current');
     currentUser = null;
-    document.getElementById('appPage').classList.remove('active');
-    document.getElementById('authPage').classList.add('active');
+    closeSidebar();
+    showWelcome();
 }
-
-function showAuthMsg(text, type) {
-    const el = document.getElementById('authMsg');
-    el.textContent = text;
-    el.className = 'status-msg status-' + type;
-    el.style.display = 'block';
+function checkSession() {
+    const saved = localStorage.getItem('offrev_current');
+    if(saved) { currentUser = JSON.parse(saved); openSidebar(); goToPage('uploadPage'); loadReviewersList(); }
 }
-
-// === NAVIGATION ===
-function showPage(name) {
-    document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('#appPage > .main-content > div').forEach(p => p.classList.remove('active'));
-    if(name === 'home') { document.querySelector('.sidebar-btn').classList.add('active'); document.getElementById('homeSection').classList.add('active'); }
-    if(name === 'upload') { document.querySelectorAll('.sidebar-btn')[1].classList.add('active'); document.getElementById('uploadSection').classList.add('active'); }
-    if(name === 'decks') { document.querySelectorAll('.sidebar-btn')[2].classList.add('active'); document.getElementById('decksSection').classList.add('active'); renderDecks(); }
-    if(name === 'flashcards') { document.getElementById('flashcardSection').classList.add('active'); showFlashcard(); }
-    if(name === 'quiz') { document.getElementById('quizSection').classList.add('active'); }
-}
-
-// === FILE UPLOAD + OCR SIMPLE ===
-document.getElementById('fileInput').addEventListener('change', async e => {
-    const file = e.target.files[0];
-    if(!file) return;
-    if(file.type === 'text/plain' || file.name.endsWith('.txt')) {
-        const text = await file.text();
-        document.getElementById('notesInput').value = text;
-    } else {
-        document.getElementById('notesInput').value = '📄 File loaded: ' + file.name + '\n\n(Paste or type your notes below if needed)';
-    }
-    document.getElementById('deckName').value = file.name.replace(/\.[^/.]+$/, '');
+// === FILE UPLOAD & EXTRACTION ===
+let uploadedText = '';
+let uploadedFile = null;
+document.getElementById('fileInput').addEventListener('change', e=>{
+    if(e.target.files[0]) handleFile(e.target.files[0]);
 });
-
-// === AI GENERATE ===
-async function generateFlashcards() {
-    const notes = document.getElementById('notesInput').value.trim();
-    const name = document.getElementById('deckName').value.trim() || 'Untitled Reviewer';
-    if(!notes) return showStatus('Paste notes or upload a file first!', 'error');
-    
-    showStatus('🤖 AI is creating flashcards... Please wait 10–30 seconds...', 'success');
-    document.getElementById('genBtn').disabled = true;
-
+async function handleFile(file) {
+    uploadedFile = file;
+    document.getElementById('fName').textContent = file.name;
+    document.getElementById('fileInfo').classList.add('show');
+    document.getElementById('status').textContent = '📖 Reading file...';
+    uploadedText = '';
     try {
-        const prompt = `Create 20 to 65 clear flashcards from this text. Format EXACTLY as: Q: [question] ||| A: [answer]
-Each card on its OWN line. Make questions vary but stay based ONLY on the text. Keep answers concise.
-Do NOT put "A:" inside the answer part. Separator: |||
-TEXT:
-${notes}`;
-
+        if(file.type==='application/pdf') {
+            uploadedText = await extractPDF(file);
+        } else if(file.type.startsWith('image/')) {
+            uploadedText = await extractImageOCR(file);
+        } else if(file.type==='text/plain') {
+            uploadedText = await readTextFile(file);
+        } else {
+            throw new Error('File type not supported. Please copy text and paste it.');
+        }
+        if(uploadedText.length<20) throw new Error('Too little text found');
+        document.getElementById('status').textContent = `✅ Ready (${uploadedText.length} characters)`;
+    } catch(err) {
+        document.getElementById('status').textContent = '⚠️ ' + err.message;
+        uploadedText = '';
+    }
+}
+function clearUpload() {
+    document.getElementById('fileInput').value='';
+    uploadedText=''; uploadedFile=null;
+    document.getElementById('pastedText').value='';
+    document.getElementById('fileInfo').classList.remove('show');
+    document.getElementById('status').textContent='';
+}
+async function extractPDF(file) {
+    const arr = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({data:arr}).promise;
+    let txt='';
+    for(let i=1;i<=pdf.numPages;i++){
+        const page=await pdf.getPage(i);
+        const c=await page.getTextContent();
+        txt+=c.items.map(x=>x.str).join(' ')+'\n';
+    }
+    return txt;
+}
+async function extractImageOCR(file) {
+    const r=await Tesseract.recognize(file,'eng');
+    return r.data.text;
+}
+async function readTextFile(file) {
+    return new Promise((ok,er)=>{const r=new FileReader();r.onload=e=>ok(e.target.result);r.onerror=er;r.readAsText(file);});
+}
+// === GENERATE REVIEWER ===
+async function generateReviewer() {
+    const topic = document.getElementById('topicName').value.trim() || 'Untitled Reviewer';
+    const pasteText = document.getElementById('pastedText').value.trim();
+    const text = pasteText || uploadedText;
+    if(!text) return alert('⚠️ Please upload a file OR paste your notes first!');
+    if(text.length < 50) return alert('⚠️ Please provide more content (at least 50 characters)');
+    document.getElementById('status').textContent='🤖 Generating flashcards... Please wait 15–30 seconds...';
+    const prompt = `From the study notes below, create high-quality flashcards.
+Rules:
+- Make MINIMUM 25 and MAXIMUM 65 flashcards.
+- Each flashcard: clear QUESTION and clear ANSWER.
+- Format EXACTLY: Q: [question] ||| A: [answer]
+- One flashcard per line.
+- IMPORTANT: Do NOT put "A: " or "Answer: " in the answer — just the answer text directly.
+- Questions must be varied, rephrased, cover all key points.
+- Answers concise and accurate.
+- Use ONLY the information in the notes below.
+NOTES:
+${text}`;
+    try {
         const res = await fetch(PROXY_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method:'POST',
+            headers: {'Content-Type':'application/json'},
             body: JSON.stringify({ prompt })
         });
-
-        if(!res.ok) throw new Error('API Error: ' + res.status);
         const data = await res.json();
-        let text = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts)
-            ? data.candidates[0].content.parts.map(p => p.text).join('\n')
-            : '';
-        if(!text) throw new Error('No response from AI');
-
-        // Parse cards
-        const cards = [];
-        const lines = text.split('\n');
-        for(const line of lines) {
-            if(line.includes('|||')) {
-                const [q, a] = line.split('|||');
-                if(q && a) cards.push({ q: q.replace(/^Q:\s*/i, '').trim(), a: a.replace(/^A:\s*/i, '').trim() });
+        if(!data.success) throw new Error(data.error || "No response from AI");
+        const respText = data.text;
+        const lines = respText.split('\n').filter(L=>L.trim().length>10);
+        cards=[];
+        for(const L of lines){
+            if(L.includes('|||')){
+                let [q,a]=L.split('|||');
+                if(q&&a) {
+                    cards.push({
+                        question: q.replace(/^Q:\s*/i,'').trim(),
+                        answer: cleanAnswerText(a)
+                    });
+                }
             }
         }
-
-        if(cards.length === 0) throw new Error('AI returned empty result. Try again.');
-
-        // Save deck
-        const deck = { name, cards, created: Date.now() };
-        decks.push(deck);
-        saveDecks();
-
-        showStatus(`✅ Done! Created ${cards.length} flashcards! Go to "My Reviewers" to study!`, 'success');
-        document.getElementById('notesInput').value = '';
-        document.getElementById('deckName').value = '';
-
+        if(cards.length<25) { 
+            alert(`⚠️ Only ${cards.length} cards generated. Please add more content and try again.`); 
+            document.getElementById('status').textContent='';
+            return; 
+        }
+        if(cards.length>65) cards=cards.slice(0,65);
+        const rev = {id:Date.now(), topic, cards, created:Date.now()};
+        reviewers.unshift(rev);
+        localStorage.setItem('offrev_reviewers', JSON.stringify(reviewers));
+        document.getElementById('status').textContent=`✅ ${cards.length} flashcards generated!`;
+        alert(`✅ SUCCESS!\n\n📚 ${cards.length} flashcards saved!\n\nGo to "My Reviewers" to start studying!`);
+        loadReviewersList();
+        goToPage('reviewersPage');
     } catch(err) {
-        showStatus('❌ Error: ' + err.message + ' — Wait a minute and try again slowly.', 'error');
-    } finally {
-        document.getElementById('genBtn').disabled = false;
+        alert('❌ Error: ' + err.message + '\n\n⚠️ Make sure your Proxy Server is deployed and running!');
+        document.getElementById('status').textContent='❌ Failed: ' + err.message;
     }
 }
-
-// === SAVE / LOAD DECKS ===
-function saveDecks() {
-    localStorage.setItem('offrev_decks_' + currentUser, JSON.stringify(decks));
+// === REVIEWERS LIST ===
+function loadReviewersList() {
+    const list=document.getElementById('reviewersList');
+    list.innerHTML='';
+    if(reviewers.length===0){list.innerHTML='<p style="text-align:center; color:#666;">No reviewers yet. Upload a file or paste text to start!</p>'; return;}
+    reviewers.forEach(rev=>{
+        const el=document.createElement('div');
+        el.className='reviewer-item';
+        el.innerHTML=`
+            <span onclick="openReviewer(${rev.id})">📖 ${rev.topic} (${rev.cards.length} cards)</span>
+            <div class="dropdown-menu">
+                <button class="dots-btn" onclick="toggleDots(this)">⋮</button>
+                <div class="dropdown-content">
+                    <div onclick="openReviewer(${rev.id})">📖 Open Reviewer</div>
+                    <div onclick="downloadReviewerTXT(${rev.id})">📥 Download .TXT</div>
+                    <div onclick="deleteReviewer(${rev.id})">🗑️ Delete</div>
+                </div>
+            </div>`;
+        list.appendChild(el);
+    });
 }
-
-function renderDecks() {
-    const list = document.getElementById('decksList');
-    if(decks.length === 0) {
-        list.innerHTML = '<p style="text-align:center; color:#666; padding:20px;">No reviewers yet. Create one first!</p>';
-        return;
-    }
-    list.innerHTML = decks.map((d, i) => `
-        <div class="deck-item" onclick="openDeck(${i})">
-            <strong>📚 ${d.name}</strong>
-            <span style="float:right; color:#666;">${d.cards.length} cards</span>
-        </div>
-    `).join('');
+function toggleDots(btn){
+    document.querySelectorAll('.dropdown-content').forEach(d=>{if(d!==btn.nextElementSibling)d.classList.remove('show');});
+    btn.nextElementSibling.classList.toggle('show');
 }
-
-function openDeck(index) {
-    currentDeckIndex = index;
-    currentCardIndex = 0;
-    cardFlipped = false;
-    quizMode = false;
-    showPage('flashcards');
+document.addEventListener('click',e=>{if(!e.target.closest('.dropdown-menu')) document.querySelectorAll('.dropdown-content').forEach(d=>d.classList.remove('show'));});
+// === FLASHCARD VIEWER ===
+function openReviewer(id){
+    activeReviewer = reviewers.find(r=>r.id===id);
+    if(!activeReviewer) return;
+    cards = activeReviewer.cards;
+    cardIdx=0;
+    document.getElementById('cardTopic').textContent='📖 '+activeReviewer.topic;
+    updateCardDisplay();
+    goToPage('flashcardPage');
 }
-
-// === FLASHCARD VIEW ===
-function showFlashcard() {
-    const deck = decks[currentDeckIndex];
-    document.getElementById('deckTitle').textContent = '📚 ' + deck.name;
-    const card = deck.cards[currentCardIndex];
-    document.getElementById('flashcardDisplay').textContent = cardFlipped ? 'A: ' + card.a : 'Q: ' + card.q;
-    document.getElementById('cardProgress').textContent = `Card ${currentCardIndex+1} of ${deck.cards.length}`;
+function updateCardDisplay(){
+    document.getElementById('flashcard').classList.remove('flipped');
+    document.getElementById('cardFront').textContent = `Q${cardIdx+1}: ${cards[cardIdx].question}`;
+    document.getElementById('cardBack').textContent = cards[cardIdx].answer;
+    document.getElementById('cardIndex').textContent = `${cardIdx+1} / ${cards.length}`;
 }
+function flipCard(){ document.getElementById('flashcard').classList.toggle('flipped'); }
+function prevCard(){ if(cardIdx>0){cardIdx--;updateCardDisplay();} }
+function nextCard(){ if(cardIdx<cards.length-1){cardIdx++;updateCardDisplay();} }
+// ✅ === DOWNLOAD AS CLEAR TEXT FILE (.TXT) — OPENS IN NOTEPAD, WORD, ANY TEXT EDITOR ===
+function downloadFlashcardsTXT(){
+    if(!activeReviewer) return;
+    // Build clean text content
+    let txtContent = `========================================\n`;
+    txtContent += `📚 ${activeReviewer.topic}\n`;
+    txtContent += `Total Cards: ${cards.length}\n`;
+    txtContent += `Generated: ${new Date().toLocaleString()}\n`;
+    txtContent += `========================================\n\n`;
 
-function flipCard() {
-    cardFlipped = !cardFlipped;
-    showFlashcard();
-}
-
-function nextCard() {
-    const len = decks[currentDeckIndex].cards.length;
-    currentCardIndex = (currentCardIndex + 1) % len;
-    cardFlipped = false;
-    showFlashcard();
-}
-
-function prevCard() {
-    const len = decks[currentDeckIndex].cards.length;
-    currentCardIndex = (currentCardIndex - 1 + len) % len;
-    cardFlipped = false;
-    showFlashcard();
-}
-
-// === DOWNLOAD AS CLEAR TEXT FILE (.txt) ===
-function downloadFlashcards() {
-    const deck = decks[currentDeckIndex];
-    let text = `========================================\n`;
-    text += `📚 ${deck.name}\n`;
-    text += `Total Cards: ${deck.cards.length}\n`;
-    text += `Generated: ${new Date().toLocaleString()}\n`;
-    text += `========================================\n\n`;
-
-    deck.cards.forEach((card, i) => {
-        text += `📝 CARD ${i+1}\n`;
-        text += `Q: ${card.q}\n`;
-        text += `A: ${card.a}\n`;
-        text += `----------------------------------------\n\n`;
+    // Add each card — clean easy-to-read format
+    cards.forEach((c, i) => {
+        txtContent += `📝 CARD ${i+1}\n`;
+        txtContent += `Q: ${c.question}\n`;
+        txtContent += `A: ${c.answer}\n`;
+        txtContent += `----------------------------------------\n\n`;
     });
 
-    // Download as .txt file (NOT pretending to be PPT!)
-    const blob = new Blob([text], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
+    // Download as REAL .TXT file (NOT pretending to be PPT!)
+    const blob = new Blob([txtContent], { type: 'text/plain' });
     const a = document.createElement('a');
-    a.href = url;
-    a.download = deck.name.replace(/\W+/g, '_') + '_Flashcards.txt';
+    a.href = URL.createObjectURL(blob);
+    a.download = activeReviewer.topic.replace(/[\\/:*?"<>|]/g,'_') + '_Flashcards.txt';
     a.click();
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(a.href);
     
-    alert('✅ Downloaded as TEXT FILE!\nOpen it in Notepad, Word, or any text editor!');
+    alert('✅ Downloaded as TEXT FILE!\n\n📌 Open it in:\n• Notepad\n• Microsoft Word\n• WPS\n• Google Docs\n• Any text editor!');
 }
-
-function deleteDeck() {
-    if(confirm('Delete this reviewer FOREVER?')) {
-        decks.splice(currentDeckIndex, 1);
-        saveDecks();
-        showPage('decks');
-    }
+function downloadReviewerTXT(id){
+    openReviewer(id);
+    setTimeout(downloadFlashcardsTXT, 100);
 }
-
-// === QUIZ MODE ===
-function startQuiz() {
-    quizMode = true;
-    quizIndex = 0;
-    quizScore = 0;
-    showPage('quiz');
-    showQuizQuestion();
+function deleteReviewer(id){
+    if(!confirm('Delete this reviewer?')) return;
+    reviewers=reviewers.filter(r=>r.id!==id);
+    localStorage.setItem('offrev_reviewers', JSON.stringify(reviewers));
+    loadReviewersList();
 }
-
-function showQuizQuestion() {
-    const deck = decks[currentDeckIndex];
-    const card = deck.cards[quizIndex];
-    document.getElementById('quizQuestion').textContent = `Q${quizIndex+1}: ${card.q}`;
-    document.getElementById('quizProgress').textContent = `Question ${quizIndex+1} of ${deck.cards.length}`;
-    document.getElementById('quizResult').style.display = 'none';
-    document.getElementById('checkBtn').style.display = 'inline-block';
-
-    // Generate options
-    let opts = [card.a];
-    while(opts.length < 4) {
-        const rnd = deck.cards[Math.floor(Math.random() * deck.cards.length)].a;
-        if(!opts.includes(rnd)) opts.push(rnd);
-    }
-    opts.sort(() => Math.random() - 0.5);
-
-    window.quizCorrectAnswer = card.a;
-    window.quizSelectedIndex = -1;
-
-    document.getElementById('quizOptions').innerHTML = opts.map((o, i) => `
-        <div class="quiz-option" onclick="selectOption(${i}, this)">${OPTION_LETTERS[i]}. ${o}</div>
-    `).join('');
+// === QUIZ SYSTEM — A, B, C, D LETTERS ADDED BACK TO OPTIONS ===
+function showQuizOptions(){ goToPage('quizOptPage'); document.querySelectorAll('.quiz-option').forEach(o=>o.classList.remove('selected')); }
+function pickQuiz(el){
+    document.querySelectorAll('.quiz-option').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+    quizType = el.dataset.type;
 }
-
-function selectOption(idx, el) {
-    document.querySelectorAll('.quiz-option').forEach(o => { o.classList.remove('selected', 'correct', 'wrong'); });
-    document.querySelectorAll('.quiz-option')[idx].classList.add('selected');
-    window.quizSelectedText = el.textContent.replace(/^[A-D]\.\s*/, '').trim();
-}
-
-function checkAnswer() {
-    if(!window.quizSelectedText) return alert('Select an answer first!');
-    const correct = window.quizSelectedText === window.quizCorrectAnswer.trim();
-    document.getElementById('quizResult').style.display = 'block';
-    if(correct) {
-        quizScore++;
-        document.getElementById('quizResult').style.background = '#e8f5e9';
-        document.getElementById('quizResult').style.color = '#2e7d32';
-        document.getElementById('quizResult').textContent = '✅ CORRECT!';
-    } else {
-        document.getElementById('quizResult').style.background = '#ffebee';
-        document.getElementById('quizResult').style.color = '#c62828';
-        document.getElementById('quizResult').textContent = `❌ WRONG! Correct: ${window.quizCorrectAnswer}`;
-    }
-    document.getElementById('checkBtn').style.display = 'none';
-    setTimeout(() => {
-        const deck = decks[currentDeckIndex];
-        quizIndex++;
-        if(quizIndex < deck.cards.length) showQuizQuestion();
-        else {
-            alert(`🎉 Quiz Complete!\nScore: ${quizScore}/${deck.cards.length} = ${Math.round(quizScore/deck.cards.length*100)}%`);
-            exitQuiz();
+function startQuiz(){
+    if(!cards||cards.length===0) return alert('⚠️ Open a reviewer first!');
+    quizIdx=0; quizCorrect=0; quizQs=[];
+    cards.forEach((c,i)=>{
+        let types = ['blank','choice','numeric'];
+        if(quizType!=='all') types=[quizType];
+        const t = types[Math.floor(Math.random()*types.length)];
+        let qObj = {type:t, q:c.question, a:c.answer, idx:i};
+        if(t==='choice'){
+            let opts=[c.answer];
+            while(opts.length<4){
+                const rand = cards[Math.floor(Math.random()*cards.length)].answer;
+                if(!opts.includes(rand)) opts.push(rand);
+            }
+            qObj.options = opts.sort(()=>Math.random()-0.5);
         }
-    }, 1800);
+        quizQs.push(qObj);
+    });
+    goToPage('quizPage');
+    displayQuizQuestion();
 }
-
-function exitQuiz() {
-    quizMode = false;
-    showPage('flashcards');
+function displayQuizQuestion(){
+    const q=quizQs[quizIdx];
+    document.getElementById('qText').textContent = `Q${quizIdx+1}: ${q.q}`;
+    document.getElementById('qIndex').textContent = `${quizIdx+1} / ${quizQs.length}`;
+    document.getElementById('qResult').classList.add('hidden');
+    document.getElementById('qAnswer').style.display='none';
+    document.getElementById('qOptions').innerHTML='';
+    if(q.type==='choice'){
+        // ✅ A, B, C, D LETTERS ADDED BACK!
+        document.getElementById('qOptions').innerHTML = q.options.map((o, idx)=>`
+            <div class="quiz-option" onclick="pickAns(this)">${OPTION_LETTERS[idx]}. ${cleanAnswerText(o)}</div>
+        `).join('');
+    } else {
+        document.getElementById('qAnswer').style.display='block';
+        document.getElementById('qAnswer').value='';
+        document.getElementById('qAnswer').focus();
+    }
+    updateQuizScore();
 }
-
-// === STATUS HELPER ===
-function showStatus(text, type) {
-    const el = document.getElementById('statusMsg');
-    el.textContent = text;
-    el.className = 'status-msg status-' + type;
-    el.style.display = 'block';
+let pickedAnswer = null;
+function pickAns(el){
+    document.querySelectorAll('#qOptions .quiz-option').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+    // Extract text without the letter for checking
+    pickedAnswer = el.textContent.replace(/^[A-D]\.\s*/,'').trim();
 }
-
+function checkAnswer(){
+    const q=quizQs[quizIdx];
+    let userAns=pickedAnswer;
+    if(q.type!=='choice') userAns = cleanAnswerText(document.getElementById('qAnswer').value.trim());
+    pickedAnswer=null;
+    const ok = userAns && (q.a.toLowerCase().includes(userAns.toLowerCase().trim()) || userAns.toLowerCase().trim() === q.a.toLowerCase().trim());
+    if(ok) quizCorrect++;
+    const res = document.getElementById('qResult');
+    res.classList.remove('hidden');
+    res.className = 'quiz-result '+(ok?'correct':'wrong');
+    res.innerHTML = ok ? '✅ CORRECT!' : `❌ WRONG! Answer: ${q.a}`;
+    updateQuizScore();
+    setTimeout(()=>{
+        if(quizIdx<quizQs.length-1){ quizIdx++; displayQuizQuestion(); }
+        else { alert(`🎉 Quiz Complete!\n\nScore: ${quizCorrect}/${quizQs.length}\n= ${Math.round(quizCorrect/quizQs.length*100)}%`); goToPage('flashcardPage'); }
+    }, ok?800:1500);
+}
+function updateQuizScore(){
+    document.getElementById('quizScore').textContent=`Score: ${quizCorrect}/${quizQs.length}`;
+}
+// === AUTO RESTORE SESSION ===
+checkSession();
 </script>
 </body>
 </html>
