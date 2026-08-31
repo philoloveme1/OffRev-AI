@@ -18,134 +18,197 @@
             --shadow: 0 4px 16px rgba(90, 61, 145, 0.15);
         }
         body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
-        /* === SIDEBAR === */
+
+        /* === HAMBURGER MENU BUTTON — ONLY ON PHONES === */
+        .menu-toggle {
+            display: none; position: fixed; top: 10px; left: 10px; z-index: 200;
+            background: white; border: none; border-radius: 8px; padding: 10px 14px;
+            font-size: 22px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        /* === SIDEBAR — DESKTOP === */
         .sidebar {
             position: fixed; left: 0; top: 0; bottom: 0; width: 220px;
             background: white; box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            padding: 20px 0; z-index: 100; display: none;
+            padding: 20px 0; z-index: 100;
         }
-        .sidebar.show { display: block; }
-        .sidebar-logo { text-align: center; font-size: 1.8rem; font-weight: bold; color: var(--purple-main); margin-bottom: 30px; padding-top:10px; }
+        .sidebar-logo { 
+            text-align: center; font-size: 1.6rem; font-weight: bold; 
+            color: var(--purple-main); margin-bottom: 25px; padding-top: 5px; 
+        }
         .sidebar-logo span { color: var(--gold); }
         .sidebar-nav { list-style: none; }
-        .sidebar-nav li { padding: 14px 25px; cursor: pointer; color: var(--text-dark); font-weight: 500; transition: all 0.2s; }
-        .sidebar-nav li:hover, .sidebar-nav li.active { background: var(--purple-bg); color: var(--purple-main); border-left: 4px solid var(--purple-main); }
+        .sidebar-nav li { 
+            padding: 12px 20px; margin: 4px 15px; cursor: pointer; color: var(--text-dark); 
+            font-weight: 500; transition: all 0.2s; border-radius: 8px;
+        }
+        .sidebar-nav li:hover, .sidebar-nav li.active { 
+            background: var(--purple-bg); color: var(--purple-main); 
+        }
         .sidebar-bottom { position: absolute; bottom: 20px; width: 100%; }
+
         /* === MAIN CONTENT === */
-        .main-content { margin-left: 0; padding: 20px; transition: margin-left 0.3s; }
-        .main-content.shifted { margin-left: 220px; }
+        .main-content { margin-left: 240px; padding: 20px; transition: margin-left 0.3s; }
         .page { display: none; }
         .page.active { display: block; }
+
         /* === WELCOME PAGE === */
-        .welcome-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 90vh; text-align: center; }
-        .welcome-logo { font-size: 4.5rem; font-weight: bold; color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.2); margin-bottom: 10px; }
+        .welcome-wrap { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            min-height: 90vh; text-align: center; padding: 20px;
+        }
+        .welcome-logo { 
+            font-size: 3.5rem; font-weight: bold; color: white; 
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2); margin-bottom: 10px; 
+        }
         .welcome-logo span { color: var(--gold); }
-        .welcome-sub { color: rgba(255,255,255,0.9); font-size: 1.2rem; margin-bottom: 50px; }
-        .btn-lg { padding: 16px 45px; font-size: 1.2rem; border-radius: 30px; border: none; cursor: pointer; font-weight: bold; transition: all 0.3s; margin: 8px; }
+        .welcome-sub { color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 40px; }
+        .btn-lg { 
+            padding: 14px 40px; font-size: 1.1rem; border-radius: 30px; border: none; 
+            cursor: pointer; font-weight: bold; transition: all 0.3s; margin: 8px; width: 280px;
+        }
         .btn-purple { background: white; color: var(--purple-main); }
         .btn-purple:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
         .btn-transparent { background: transparent; color: white; border: 2px solid white; }
         .btn-transparent:hover { background: rgba(255,255,255,0.15); }
+
         /* === BOXES & FORMS === */
-        .card-box { background: white; border-radius: 16px; padding: 30px; box-shadow: var(--shadow); max-width: 540px; margin: 30px auto; }
-        .card-box h2 { text-align: center; color: var(--purple-dark); margin-bottom: 25px; }
-        label { font-weight: 600; color: #5a3d91; display: block; margin-bottom: 8px; margin-top: 15px; }
+        .card-box { 
+            background: white; border-radius: 16px; padding: 25px; 
+            box-shadow: var(--shadow); max-width: 540px; margin: 20px auto; 
+        }
+        .card-box h2 { text-align: center; color: var(--purple-dark); margin-bottom: 20px; font-size: 1.4rem; }
+        label { font-weight: 600; color: #5a3d91; display: block; margin-bottom: 8px; margin-top: 15px; font-size: 0.95rem; }
         input {
-            width: 100%; padding: 14px 16px; margin-bottom: 16px;
+            width: 100%; padding: 12px 14px; margin-bottom: 14px;
             border: 2px solid var(--purple-border); border-radius: 10px;
             font-size: 1rem; background: white;
         }
-        /* === ONE COMBINED UPLOAD AREA — FILE INFO INSIDE === */
+
+        /* === UPLOAD AREA === */
         .upload-combined {
             border: 2px dashed var(--purple-main); border-radius: 12px;
             padding: 15px; background: var(--purple-bg); margin-bottom: 16px;
-            position: relative; min-height: 180px; cursor: text;
+            min-height: 160px; cursor: text;
         }
         .upload-hint {
             text-align: center; color: var(--purple-main); font-weight: 600;
-            font-size: 0.95rem; padding: 10px 0;
+            font-size: 0.9rem; padding: 8px 0;
         }
         .upload-combined-textarea {
-            width: 100%; min-height: 100px; padding: 10px;
-            border: none; background: transparent; font-size: 1rem;
-            resize: vertical; outline: none;
-            text-align: left;
-            direction: ltr;
+            width: 100%; min-height: 90px; padding: 10px;
+            border: none; background: transparent; font-size: 0.95rem;
+            resize: vertical; outline: none; text-align: left;
         }
         .file-info {
             background: white; border: 1px solid var(--purple-border);
-            padding: 10px 14px; border-radius: 8px; margin: 10px 0;
+            padding: 8px 12px; border-radius: 8px; margin: 10px 0;
             display: none; justify-content: space-between; align-items: center;
         }
         .file-info.show { display: flex; }
         .clear-btn {
-            background: #ff4757; color: white; border: none; padding: 5px 12px;
+            background: #ff4757; color: white; border: none; padding: 4px 10px;
             border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 500;
         }
         .btn-oval {
-            display: block; width: 220px; padding: 14px; margin: 20px auto;
+            display: block; width: 200px; padding: 12px; margin: 18px auto;
             background: linear-gradient(135deg, var(--purple-main), var(--purple-dark));
             color: white; border: none; border-radius: 30px;
-            font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.2s;
+            font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.2s;
         }
         .btn-oval:hover { transform: scale(1.03); box-shadow: 0 4px 15px rgba(123, 82, 217, 0.4); }
-        .link-text { text-align: center; margin-top: 15px; color: var(--purple-main); cursor: pointer; text-decoration: underline; }
-        .status { text-align: center; margin: 15px 0; color: var(--purple-dark); font-style: italic; }
-        .warning-box { background: #fff3cd; color: #856404; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 0.95rem; line-height: 1.5; }
+        .link-text { text-align: center; margin-top: 15px; color: var(--purple-main); cursor: pointer; text-decoration: underline; font-size: 0.95rem; }
+        .status { text-align: center; margin: 15px 0; color: var(--purple-dark); font-style: italic; font-size: 0.9rem; }
+        .warning-box { 
+            background: #fff3cd; color: #856404; padding: 12px; 
+            border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; line-height: 1.5; 
+        }
+
         /* === REVIEWER LIST === */
         .reviewer-item {
-            padding: 16px; background: var(--purple-bg); border-radius: 10px; margin: 10px 0;
+            padding: 14px; background: var(--purple-bg); border-radius: 10px; margin: 10px 0;
             display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+            font-size: 0.95rem;
         }
         .reviewer-item:hover { background: #e9e2fb; }
-        .dots-btn { border: none; background: none; font-size: 1.3rem; cursor: pointer; color: var(--text-light); padding: 0 10px; }
+        .dots-btn { border: none; background: none; font-size: 1.2rem; cursor: pointer; color: var(--text-light); padding: 0 8px; }
         .dropdown-menu { position: relative; }
         .dropdown-content {
             display: none; position: absolute; right: 0; top: 30px;
-            background: white; min-width: 140px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background: white; min-width: 130px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-radius: 8px; z-index: 10;
         }
         .dropdown-content.show { display: block; }
-        .dropdown-content div { padding: 10px 14px; cursor: pointer; font-size: 0.95rem; }
+        .dropdown-content div { padding: 9px 12px; cursor: pointer; font-size: 0.9rem; }
         .dropdown-content div:hover { background: var(--purple-bg); }
-        /* === FLASHCARD DISPLAY === */
+
+        /* === FLASHCARD === */
         .flashcard {
-            width: 100%; min-height: 180px; perspective: 1000px; cursor: pointer; margin: 15px 0;
+            width: 100%; min-height: 160px; perspective: 1000px; cursor: pointer; margin: 15px 0;
         }
         .card-inner {
-            position: relative; width: 100%; min-height: 180px; text-align: center;
+            position: relative; width: 100%; min-height: 160px; text-align: center;
             transition: transform 0.5s; transform-style: preserve-3d;
         }
         .flashcard.flipped .card-inner { transform: rotateY(180deg); }
         .card-front, .card-back {
-            position: absolute; width: 100%; padding: 25px;
+            position: absolute; width: 100%; padding: 20px;
             backface-visibility: hidden; border-radius: 14px;
             box-shadow: var(--shadow); display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; line-height: 1.5;
         }
         .card-front { background: white; color: var(--purple-dark); border: 2px solid var(--purple-border); }
         .card-back { background: linear-gradient(135deg, #f3efff, #e2d5fb); color: var(--text-dark); transform: rotateY(180deg); border: 2px solid var(--purple-main); }
         .card-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
-        .card-nav button { padding: 8px 16px; background: var(--purple-main); color: white; border: none; border-radius: 8px; cursor: pointer; }
-        .card-index { color: var(--text-light); font-size: 0.95rem; }
-        .top-actions { display: flex; justify-content: space-between; margin-bottom: 15px; }
-        .top-actions button { padding: 8px 14px; background: var(--purple-main); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; margin-left: 5px; }
+        .card-nav button { padding: 8px 14px; background: var(--purple-main); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
+        .card-index { color: var(--text-light); font-size: 0.9rem; }
+        .top-actions { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
+        .top-actions button { padding: 8px 12px; background: var(--purple-main); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.85rem; }
         .back-btn { background: white; color: var(--purple-main); border: 2px solid var(--purple-main) !important; }
+
+        /* === QUIZ === */
         .quiz-option {
-            padding: 14px 18px; border: 2px solid var(--purple-border); border-radius: 10px;
+            padding: 12px 15px; border: 2px solid var(--purple-border); border-radius: 10px;
             margin: 10px 0; cursor: pointer; transition: all 0.2s;
-            font-size: 1rem; text-align: left;
+            font-size: 0.95rem; text-align: left;
         }
         .quiz-option:hover, .quiz-option.selected { border-color: var(--purple-main); background: var(--purple-bg); }
-        .quiz-question { font-size: 1.1rem; font-weight: 600; color: var(--purple-dark); margin-bottom: 20px; line-height: 1.5; text-align: left; }
-        .quiz-input { width: 100%; padding: 14px; border: 2px solid var(--purple-border); border-radius: 8px; font-size: 1rem; margin-bottom: 15px; text-align: left; }
-        .quiz-result { margin-top: 15px; padding: 12px; border-radius: 8px; font-weight: 500; text-align: left; }
+        .quiz-question { font-size: 1rem; font-weight: 600; color: var(--purple-dark); margin-bottom: 18px; line-height: 1.5; text-align: left; }
+        .quiz-input { width: 100%; padding: 12px; border: 2px solid var(--purple-border); border-radius: 8px; font-size: 1rem; margin-bottom: 15px; text-align: left; }
+        .quiz-result { margin-top: 15px; padding: 12px; border-radius: 8px; font-weight: 500; text-align: left; font-size: 0.95rem; }
         .correct { background: #e8f5e9; color: #2e7d32; }
         .wrong { background: #ffebee; color: #c62828; }
       
         .hidden { display: none !important; }
+
+        /* ====================================== */
+        /* 📱 MOBILE PHONE — SPECIAL SETTINGS */
+        /* ====================================== */
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; } /* Show hamburger button on phones */
+            
+            .sidebar {
+                width: 260px; /* Fixed small width on phone */
+                transform: translateX(-100%); /* Hide sidebar off-screen */
+                transition: transform 0.3s ease;
+            }
+            .sidebar.show { transform: translateX(0); } /* Show when button clicked */
+            
+            .main-content { margin-left: 0; padding: 15px; padding-top: 60px; } /* Full width on phone */
+            
+            .welcome-logo { font-size: 2.5rem; }
+            .btn-lg { width: 100%; max-width: 280px; }
+            .card-box { padding: 20px; margin: 10px; }
+            .btn-oval { width: 180px; padding: 11px; font-size: 0.95rem; }
+            .top-actions button { padding: 7px 10px; font-size: 0.8rem; }
+        }
     </style>
 </head>
 <body>
+
+<!-- 📱 HAMBURGER BUTTON — ONLY ON PHONES -->
+<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</button>
+
 <!-- === SIDEBAR NAVIGATION === -->
 <div class="sidebar" id="sidebar">
     <div class="sidebar-logo">Off<span>Rev</span></div>
@@ -158,6 +221,7 @@
         <li onclick="logout()">🚪 Logout</li>
     </ul>
 </div>
+
 <!-- === MAIN CONTENT AREA === -->
 <div class="main-content" id="mainContent">
     <!-- PAGE 1: WELCOME / LOGIN -->
@@ -169,6 +233,7 @@
             <button class="btn-lg btn-transparent" onclick="showCreateAccount()">📝 Create Account</button>
         </div>
     </div>
+
     <!-- PAGE 2: LOGIN FORM -->
     <div class="page" id="loginPage">
         <div class="card-box">
@@ -181,6 +246,7 @@
             <div class="link-text" onclick="showWelcome()">← Back</div>
         </div>
     </div>
+
     <!-- PAGE 3: CREATE ACCOUNT -->
     <div class="page" id="createPage">
         <div class="card-box">
@@ -194,7 +260,8 @@
             <div class="link-text" onclick="showWelcome()">← Back</div>
         </div>
     </div>
-    <!-- PAGE 4: UPLOAD & GENERATE — FILE INFO INSIDE BOX + TEXT LEFT ALIGNED -->
+
+    <!-- PAGE 4: UPLOAD & GENERATE -->
     <div class="page" id="uploadPage">
         <div class="card-box">
             <h2>✨ Generate Reviewer</h2>
@@ -202,7 +269,6 @@
                 ⚠️ PPTX files: Open → Select All → Copy text → Paste below.<br>
                 ✅ PDF, Images, and plain text work perfectly!
             </div>
-            <!-- === UPLOAD AREA — FILE INFO INSIDE THE BOX === -->
             <label>📁 Upload File OR Paste Notes Below:</label>
             <div class="upload-combined" id="uploadCombined">
                 <div class="upload-hint" onclick="document.getElementById('fileInput').click()">
@@ -221,6 +287,7 @@
             <div class="status" id="status"></div>
         </div>
     </div>
+
     <!-- PAGE 5: LIST OF GENERATED REVIEWERS -->
     <div class="page" id="reviewersPage">
         <div class="card-box">
@@ -229,6 +296,7 @@
             <div class="link-text" onclick="goToPage('uploadPage')">← Upload another file</div>
         </div>
     </div>
+
     <!-- PAGE 6: FLASHCARD VIEWER -->
     <div class="page" id="flashcardPage">
         <div class="card-box">
@@ -236,7 +304,7 @@
                 <button class="back-btn" onclick="goToPage('reviewersPage')">← Back</button>
                 <div>
                     <button onclick="downloadFlashcardsTXT()">📥 Download .TXT</button>
-                    <button onclick="showQuizOptions()">📝 Take Quiz</button>
+                    <button onclick="showQuizOptions()">📝 Quiz</button>
                 </div>
             </div>
             <h3 style="text-align:center; color:var(--purple-dark); margin-bottom:20px;" id="cardTopic"></h3>
@@ -247,12 +315,13 @@
                 </div>
             </div>
             <div class="card-nav">
-                <button onclick="prevCard()">← Previous</button>
+                <button onclick="prevCard()">← Prev</button>
                 <span class="card-index" id="cardIndex">1 / 1</span>
                 <button onclick="nextCard()">Next →</button>
             </div>
         </div>
     </div>
+
     <!-- PAGE 7: QUIZ OPTIONS -->
     <div class="page" id="quizOptPage">
         <div class="card-box">
@@ -267,6 +336,7 @@
             <button class="btn-oval" onclick="startQuiz()">Start Quiz</button>
         </div>
     </div>
+
     <!-- PAGE 8: QUIZ RUNNER -->
     <div class="page" id="quizPage">
         <div class="card-box">
@@ -283,12 +353,25 @@
         </div>
     </div>
 </div>
+
 <!-- === LIBRARIES === -->
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.min.js"></script>
 <script>
-// ⚙️ CONFIG — USE YOUR PROXY SERVER
+// ⚙️ CONFIG
 const PROXY_URL = "https://offrev-proxy.philoloveme1.workers.dev/";
+
+// 📱 SIDEBAR TOGGLE FOR PHONES
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('show');
+}
+// Close sidebar when clicking a link (on phone)
+function closeSidebarOnMobile() {
+    if(window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('show');
+    }
+}
+
 // 📦 DATA STORAGE
 let currentUser = null;
 let reviewers = JSON.parse(localStorage.getItem('offrev_reviewers') || '[]');
@@ -299,7 +382,8 @@ let quizType = 'all';
 let quizQs = [];
 let quizIdx = 0;
 let quizCorrect = 0;
-// === CLEAN ANSWER TEXT — REMOVES "A: " FROM AI ANSWERS BUT KEEPS A/B/C/D IN QUIZ ===
+
+// === CLEAN ANSWER TEXT ===
 function cleanAnswerText(text) {
     if (!text) return '';
     return text
@@ -309,21 +393,26 @@ function cleanAnswerText(text) {
         .replace(/^A:\s*/g, '')
         .trim();
 }
-// === LETTERS FOR QUIZ OPTIONS ===
+
 const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
+
 // === PAGE NAVIGATION ===
 function hideAllPages() { document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); }
-function showWelcome() { hideAllPages(); document.getElementById('welcomePage').classList.add('active'); closeSidebar(); }
+function showWelcome() { hideAllPages(); document.getElementById('welcomePage').classList.add('active'); }
 function showLogin() { hideAllPages(); document.getElementById('loginPage').classList.add('active'); }
 function showCreateAccount() { hideAllPages(); document.getElementById('createPage').classList.add('active'); }
-function goToPage(id) { hideAllPages(); document.getElementById(id).classList.add('active'); updateSidebar(id); }
+function goToPage(id) { 
+    hideAllPages(); 
+    document.getElementById(id).classList.add('active'); 
+    closeSidebarOnMobile(); // Auto-close sidebar on phone after clicking
+    updateSidebar(id); 
+}
 function updateSidebar(pageId) {
     document.querySelectorAll('.sidebar-nav li').forEach(li=>li.classList.remove('active'));
     if(pageId==='uploadPage') document.querySelectorAll('.sidebar-nav li')[0].classList.add('active');
     if(pageId==='reviewersPage') document.querySelectorAll('.sidebar-nav li')[2].classList.add('active');
 }
-function openSidebar() { document.getElementById('sidebar').classList.add('show'); document.getElementById('mainContent').classList.add('shifted'); }
-function closeSidebar() { document.getElementById('sidebar').classList.remove('show'); document.getElementById('mainContent').classList.remove('shifted'); }
+
 // === ACCOUNT SYSTEM ===
 function doCreateAccount() {
     const name = document.getElementById('newName').value.trim();
@@ -342,21 +431,20 @@ function doLogin() {
     if(!user||!email||!pass) return alert('⚠️ Fill all fields');
     currentUser = {name:user,user,email};
     localStorage.setItem('offrev_current', JSON.stringify(currentUser));
-    openSidebar();
     goToPage('uploadPage');
     loadReviewersList();
 }
 function logout() {
     localStorage.removeItem('offrev_current');
     currentUser = null;
-    closeSidebar();
     showWelcome();
 }
 function checkSession() {
     const saved = localStorage.getItem('offrev_current');
-    if(saved) { currentUser = JSON.parse(saved); openSidebar(); goToPage('uploadPage'); loadReviewersList(); }
+    if(saved) { currentUser = JSON.parse(saved); goToPage('uploadPage'); loadReviewersList(); }
 }
-// === FILE UPLOAD & EXTRACTION ===
+
+// === FILE UPLOAD ===
 let uploadedText = '';
 let uploadedFile = null;
 document.getElementById('fileInput').addEventListener('change', e=>{
@@ -376,10 +464,10 @@ async function handleFile(file) {
         } else if(file.type==='text/plain') {
             uploadedText = await readTextFile(file);
         } else {
-            throw new Error('File type not supported. Please copy text and paste it.');
+            throw new Error('Copy text and paste it.');
         }
         if(uploadedText.length<20) throw new Error('Too little text found');
-        document.getElementById('status').textContent = `✅ Ready (${uploadedText.length} characters)`;
+        document.getElementById('status').textContent = `✅ Ready (${uploadedText.length} chars)`;
     } catch(err) {
         document.getElementById('status').textContent = '⚠️ ' + err.message;
         uploadedText = '';
@@ -410,25 +498,17 @@ async function extractImageOCR(file) {
 async function readTextFile(file) {
     return new Promise((ok,er)=>{const r=new FileReader();r.onload=e=>ok(e.target.result);r.onerror=er;r.readAsText(file);});
 }
+
 // === GENERATE REVIEWER ===
 async function generateReviewer() {
     const topic = document.getElementById('topicName').value.trim() || 'Untitled Reviewer';
     const pasteText = document.getElementById('pastedText').value.trim();
     const text = pasteText || uploadedText;
-    if(!text) return alert('⚠️ Please upload a file OR paste your notes first!');
-    if(text.length < 50) return alert('⚠️ Please provide more content (at least 50 characters)');
-    document.getElementById('status').textContent='🤖 Generating flashcards... Please wait 15–30 seconds...';
-    const prompt = `From the study notes below, create high-quality flashcards.
-Rules:
-- Make MINIMUM 25 and MAXIMUM 65 flashcards.
-- Each flashcard: clear QUESTION and clear ANSWER.
-- Format EXACTLY: Q: [question] ||| A: [answer]
-- One flashcard per line.
-- IMPORTANT: Do NOT put "A: " or "Answer: " in the answer — just the answer text directly.
-- Questions must be varied, rephrased, cover all key points.
-- Answers concise and accurate.
-- Use ONLY the information in the notes below.
-NOTES:
+    if(!text) return alert('⚠️ Upload file OR paste notes first!');
+    if(text.length < 50) return alert('⚠️ Provide more content (50+ chars)');
+    document.getElementById('status').textContent='🤖 Generating... Please wait...';
+    const prompt = `Create 25–65 flashcards. Format EXACTLY: Q: [question] ||| A: [answer]
+One per line. Answer = concise text only. Questions varied. Use ONLY this text:
 ${text}`;
     try {
         const res = await fetch(PROXY_URL, {
@@ -437,44 +517,39 @@ ${text}`;
             body: JSON.stringify({ prompt })
         });
         const data = await res.json();
-        if(!data.success) throw new Error(data.error || "No response from AI");
+        if(!data.success) throw new Error(data.error || "No response from AI — Wait 1 min & try again");
         const respText = data.text;
         const lines = respText.split('\n').filter(L=>L.trim().length>10);
         cards=[];
         for(const L of lines){
             if(L.includes('|||')){
                 let [q,a]=L.split('|||');
-                if(q&&a) {
-                    cards.push({
-                        question: q.replace(/^Q:\s*/i,'').trim(),
-                        answer: cleanAnswerText(a)
-                    });
-                }
+                if(q&&a) cards.push({
+                    question: q.replace(/^Q:\s*/i,'').trim(),
+                    answer: cleanAnswerText(a)
+                });
             }
         }
-        if(cards.length<25) { 
-            alert(`⚠️ Only ${cards.length} cards generated. Please add more content and try again.`); 
-            document.getElementById('status').textContent='';
-            return; 
-        }
+        if(cards.length<25) { alert(`⚠️ Only ${cards.length} cards. Add more content.`); return; }
         if(cards.length>65) cards=cards.slice(0,65);
         const rev = {id:Date.now(), topic, cards, created:Date.now()};
         reviewers.unshift(rev);
         localStorage.setItem('offrev_reviewers', JSON.stringify(reviewers));
         document.getElementById('status').textContent=`✅ ${cards.length} flashcards generated!`;
-        alert(`✅ SUCCESS!\n\n📚 ${cards.length} flashcards saved!\n\nGo to "My Reviewers" to start studying!`);
+        alert(`✅ SUCCESS!\n📚 ${cards.length} cards saved!`);
         loadReviewersList();
         goToPage('reviewersPage');
     } catch(err) {
-        alert('❌ Error: ' + err.message + '\n\n⚠️ Make sure your Proxy Server is deployed and running!');
-        document.getElementById('status').textContent='❌ Failed: ' + err.message;
+        alert('❌ Error: ' + err.message);
+        document.getElementById('status').textContent='❌ Failed';
     }
 }
+
 // === REVIEWERS LIST ===
 function loadReviewersList() {
     const list=document.getElementById('reviewersList');
     list.innerHTML='';
-    if(reviewers.length===0){list.innerHTML='<p style="text-align:center; color:#666;">No reviewers yet. Upload a file or paste text to start!</p>'; return;}
+    if(reviewers.length===0){list.innerHTML='<p style="text-align:center; color:#666;">No reviewers yet.</p>'; return;}
     reviewers.forEach(rev=>{
         const el=document.createElement('div');
         el.className='reviewer-item';
@@ -483,7 +558,7 @@ function loadReviewersList() {
             <div class="dropdown-menu">
                 <button class="dots-btn" onclick="toggleDots(this)">⋮</button>
                 <div class="dropdown-content">
-                    <div onclick="openReviewer(${rev.id})">📖 Open Reviewer</div>
+                    <div onclick="openReviewer(${rev.id})">📖 Open</div>
                     <div onclick="downloadReviewerTXT(${rev.id})">📥 Download .TXT</div>
                     <div onclick="deleteReviewer(${rev.id})">🗑️ Delete</div>
                 </div>
@@ -496,6 +571,7 @@ function toggleDots(btn){
     btn.nextElementSibling.classList.toggle('show');
 }
 document.addEventListener('click',e=>{if(!e.target.closest('.dropdown-menu')) document.querySelectorAll('.dropdown-content').forEach(d=>d.classList.remove('show'));});
+
 // === FLASHCARD VIEWER ===
 function openReviewer(id){
     activeReviewer = reviewers.find(r=>r.id===id);
@@ -515,45 +591,38 @@ function updateCardDisplay(){
 function flipCard(){ document.getElementById('flashcard').classList.toggle('flipped'); }
 function prevCard(){ if(cardIdx>0){cardIdx--;updateCardDisplay();} }
 function nextCard(){ if(cardIdx<cards.length-1){cardIdx++;updateCardDisplay();} }
-// ✅ === DOWNLOAD AS CLEAR TEXT FILE (.TXT) — OPENS IN NOTEPAD, WORD, ANY TEXT EDITOR ===
+
+// ✅ DOWNLOAD AS CLEAR TEXT FILE
 function downloadFlashcardsTXT(){
     if(!activeReviewer) return;
-    // Build clean text content
     let txtContent = `========================================\n`;
     txtContent += `📚 ${activeReviewer.topic}\n`;
     txtContent += `Total Cards: ${cards.length}\n`;
     txtContent += `Generated: ${new Date().toLocaleString()}\n`;
     txtContent += `========================================\n\n`;
-
-    // Add each card — clean easy-to-read format
     cards.forEach((c, i) => {
         txtContent += `📝 CARD ${i+1}\n`;
         txtContent += `Q: ${c.question}\n`;
         txtContent += `A: ${c.answer}\n`;
         txtContent += `----------------------------------------\n\n`;
     });
-
-    // Download as REAL .TXT file (NOT pretending to be PPT!)
     const blob = new Blob([txtContent], { type: 'text/plain' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = activeReviewer.topic.replace(/[\\/:*?"<>|]/g,'_') + '_Flashcards.txt';
     a.click();
     URL.revokeObjectURL(a.href);
-    
-    alert('✅ Downloaded as TEXT FILE!\n\n📌 Open it in:\n• Notepad\n• Microsoft Word\n• WPS\n• Google Docs\n• Any text editor!');
+    alert('✅ Downloaded!\nOpen in Notepad / Word / WPS!');
 }
-function downloadReviewerTXT(id){
-    openReviewer(id);
-    setTimeout(downloadFlashcardsTXT, 100);
-}
+function downloadReviewerTXT(id){ openReviewer(id); setTimeout(downloadFlashcardsTXT, 100); }
 function deleteReviewer(id){
     if(!confirm('Delete this reviewer?')) return;
     reviewers=reviewers.filter(r=>r.id!==id);
     localStorage.setItem('offrev_reviewers', JSON.stringify(reviewers));
     loadReviewersList();
 }
-// === QUIZ SYSTEM — A, B, C, D LETTERS ADDED BACK TO OPTIONS ===
+
+// === QUIZ SYSTEM ===
 function showQuizOptions(){ goToPage('quizOptPage'); document.querySelectorAll('.quiz-option').forEach(o=>o.classList.remove('selected')); }
 function pickQuiz(el){
     document.querySelectorAll('.quiz-option').forEach(o=>o.classList.remove('selected'));
@@ -589,7 +658,6 @@ function displayQuizQuestion(){
     document.getElementById('qAnswer').style.display='none';
     document.getElementById('qOptions').innerHTML='';
     if(q.type==='choice'){
-        // ✅ A, B, C, D LETTERS ADDED BACK!
         document.getElementById('qOptions').innerHTML = q.options.map((o, idx)=>`
             <div class="quiz-option" onclick="pickAns(this)">${OPTION_LETTERS[idx]}. ${cleanAnswerText(o)}</div>
         `).join('');
@@ -598,13 +666,12 @@ function displayQuizQuestion(){
         document.getElementById('qAnswer').value='';
         document.getElementById('qAnswer').focus();
     }
-    updateQuizScore();
+    document.getElementById('quizScore').textContent=`Score: ${quizCorrect}/${quizQs.length}`;
 }
 let pickedAnswer = null;
 function pickAns(el){
     document.querySelectorAll('#qOptions .quiz-option').forEach(o=>o.classList.remove('selected'));
     el.classList.add('selected');
-    // Extract text without the letter for checking
     pickedAnswer = el.textContent.replace(/^[A-D]\.\s*/,'').trim();
 }
 function checkAnswer(){
@@ -618,15 +685,13 @@ function checkAnswer(){
     res.classList.remove('hidden');
     res.className = 'quiz-result '+(ok?'correct':'wrong');
     res.innerHTML = ok ? '✅ CORRECT!' : `❌ WRONG! Answer: ${q.a}`;
-    updateQuizScore();
+    document.getElementById('quizScore').textContent=`Score: ${quizCorrect}/${quizQs.length}`;
     setTimeout(()=>{
         if(quizIdx<quizQs.length-1){ quizIdx++; displayQuizQuestion(); }
-        else { alert(`🎉 Quiz Complete!\n\nScore: ${quizCorrect}/${quizQs.length}\n= ${Math.round(quizCorrect/quizQs.length*100)}%`); goToPage('flashcardPage'); }
+        else { alert(`🎉 Quiz Complete!\nScore: ${quizCorrect}/${quizQs.length} = ${Math.round(quizCorrect/quizQs.length*100)}%`); goToPage('flashcardPage'); }
     }, ok?800:1500);
 }
-function updateQuizScore(){
-    document.getElementById('quizScore').textContent=`Score: ${quizCorrect}/${quizQs.length}`;
-}
+
 // === AUTO RESTORE SESSION ===
 checkSession();
 </script>
